@@ -2,7 +2,7 @@ const User = require("./User");
 const Task = require("./Task");
 
 
-// some relations or associations
+// model relations
 User.hasMany(Task, {
   onDelete: "CASCADE",
   foreignKey: {
