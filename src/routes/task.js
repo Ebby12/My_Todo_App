@@ -1,54 +1,53 @@
-const { User } = require("../models");
+const { Task } = require("../models");
 const express = require("express");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  console.log("here");
   try {
-    const users = await User.findAll();
-    res.json(users);
+    const tasks = await Task.findAll();
+    res.json(tasks);
   } catch (error) {
     next(error);
   }
 });
 
-//get users by id
+//get tasks by id
 
 router.get("/:userId", async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.userId, {
+    const task = await Task.findByPk(req.params.userId, {
       include: [{ model: Page }],
     });
 
-    if (!user) {
+    if (!task) {
       res.status(404);
       next();
     } else {
-      res.send(user);
+      res.send(task);
     }
   } catch (error) {
     next(error);
   }
 });
 
-//post users
+//post tasks
 router.post("/create", async (req, res) => {
-  const user = await User.create(req.body);
-  res.json(user);
+  const task = await Task.create(req.body);
+  res.json(task);
 });
 
-//update users
+//update tasks
 
 router.put("/:id", async (req, res, next) => {
   try {
-    const updatedUser = await User.update(req.body, {
+    const updatedUser = await Task.update(req.body, {
       where: { id: req.params.id },
     });
     if (updatedUser == 0) {
-      throw new Error("No user update!");
+      throw new Error("No task update!");
     }
-    const userUpdate = await User.findByPk(req.body.id);
+    const userUpdate = await Task.findByPk(req.body.id);
     res.send(userUpdate);
     res.status(200);
   } catch (error) {
@@ -56,16 +55,16 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-//delete users
+//delete tasks
 router.delete("/:id", async (req, res) => {
   try {
-    await User.destroy({
+    await Task.destroy({
       where: {
         id: req.params.id,
       },
     });
-    const users = await User.findAll();
-    res.send(users);
+    const tasks = await Task.findAll();
+    res.send(tasks);
   } catch (error) {
     next(error);
   }

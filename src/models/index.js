@@ -1,7 +1,6 @@
 const User = require("./User");
 const Task = require("./Task");
 
-
 // model relations
 User.hasMany(Task, {
   onDelete: "CASCADE",
